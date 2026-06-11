@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-github-bg text-github-text font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0d1117;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+@layer components {
+  .github-card {
+    @apply border border-[#30363d] rounded-lg bg-[#161b22];
+  }
+
+  .github-btn {
+    @apply border border-[#30363d] rounded-md px-3 py-1 text-xs sm:text-sm text-github-muted 
+           bg-[#21262d] hover:bg-[#30363d] transition-colors duration-150;
+  }
+}
+
+/* Falling leaves animation for commits */
+@keyframes fall-leaf {
+  0% {
+    transform: translateY(-120px) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.95;
+  }
+  25% {
+    transform: translateY(28vh) translateX(calc(var(--sway) * 0.3)) rotate(5deg);
+  }
+  50% {
+    transform: translateY(55vh) translateX(calc(var(--sway) * 0.8)) rotate(-4deg);
+  }
+  75% {
+    transform: translateY(78vh) translateX(calc(var(--sway) * 0.4)) rotate(6deg);
+  }
+  95% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(calc(100vh + 100px)) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+}

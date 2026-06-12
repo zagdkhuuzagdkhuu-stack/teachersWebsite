@@ -109,8 +109,8 @@ export default function TeacherAccess() {
         >
           {letters.length === 0 ? (
             <div className="text-white/40 text-center py-12">
-              <p className="text-lg">Захидал байхгүй байна.</p>
-              <p className="text-sm mt-2">Дараа дахин оролдоно уу.</p>
+              <p className="text-lg">Энэ багш руу одоогоор захидал ирээгүй байна.</p>
+              <p className="text-sm mt-2">Та дараа дахин шалгана уу эсвэл өөр багш руу захидал бичнэ үү.</p>
             </div>
           ) : (
             <div className="space-y-4">

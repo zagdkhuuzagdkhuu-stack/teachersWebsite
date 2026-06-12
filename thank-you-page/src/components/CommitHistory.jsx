@@ -23,7 +23,8 @@ function getColor(index) {
 }
 
 function getInitials(name) {
-  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  if (!name) return '';
+  return name.split(/[-\s]+/).map(w => w[0] || '').join('').toUpperCase().slice(0, 2);
 }
 
 function randomBetween(min, max) {
@@ -33,6 +34,7 @@ function randomBetween(min, max) {
 export default function CommitHistory() {
   const [commits, setCommits] = useState([]);
   const [topOffset, setTopOffset] = useState(96);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -49,6 +51,16 @@ export default function CommitHistory() {
       const gap = window.innerWidth >= 640 ? 32 : 24;
       setTopOffset(nav.offsetHeight + gap);
     }
+  }, []);
+
+  useEffect(() => {
+    function checkMobile() {
+      setIsMobile(window.innerWidth < 640);
+    }
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   if (commits.length === 0) {
@@ -114,8 +126,33 @@ export default function CommitHistory() {
       </div>
 
       {/* Falling cards container */}
-      <div className="relative w-full px-4 sm:px-6 lg:px-8 pb-8" style={{ height: '70vh', minHeight: '400px' }}>
-        {commits.map((c, index) => {
+      <div className="relative w-full px-4 sm:px-6 lg:px-8 pb-8" style={{ height: isMobile ? 'auto' : '70vh', minHeight: isMobile ? '0' : '400px' }}>
+        {isMobile ? (
+          // On small screens render a stacked, scrollable list for better readability
+          <div className="flex flex-col gap-4">
+            {commits.map((c, index) => {
+              const displayName = c.name || 'Оюутан нэрээ үлдээгээгүй';
+              return (
+                <div
+                  key={c.id}
+                  className="flex flex-col gap-1.5 px-4 py-3 rounded-lg border border-github-border bg-github-card/95 backdrop-blur-sm shadow-sm w-full"
+                >
+                  <div className="flex items-center gap-2">
+                    <div
+                      className={`w-7 h-7 rounded-full bg-gradient-to-br ${getColor(index)} flex items-center justify-center text-[11px] font-bold text-white shrink-0`}
+                    >
+                      {getInitials(displayName)}
+                    </div>
+                    <span className="text-sm font-medium text-github-text truncate">{displayName}</span>
+                    <span className="text-[10px] text-github-muted ml-auto whitespace-nowrap">{c.createdAt ? new Date(c.createdAt).toLocaleDateString() : ''}</span>
+                  </div>
+                  <p className="text-sm text-github-accent leading-relaxed">{c.message}</p>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          commits.map((c, index) => {
           const displayName = c.name || 'Оюутан нэрээ үлдээгээгүй';
           const duration = randomBetween(10, 16);
           const startX = randomBetween(2, 88);
@@ -153,7 +190,8 @@ export default function CommitHistory() {
               </p>
             </div>
           );
-        })}
+        })
+      )}
       </div>
     </div>
   );

@@ -6,17 +6,17 @@ app.use(cors());
 app.use(express.json());
 
 const TEACHERS = [
-  { id: 1, name: 'James', secretCode: 'james-2026' },
-  { id: 2, name: 'Emily', secretCode: 'emily-2026' },
-  { id: 3, name: 'Alex', secretCode: 'alex-2026' },
-  { id: 4, name: 'Sofia', secretCode: 'sofia-2026' },
-  { id: 5, name: 'Daniel', secretCode: 'daniel-2026' },
-  { id: 6, name: 'Linda', secretCode: 'linda-2026' },
-  { id: 7, name: 'Noah', secretCode: 'noah-2026' },
-  { id: 8, name: 'Maya', secretCode: 'maya-2026' },
-  { id: 9, name: 'Oscar', secretCode: 'oscar-2026' },
-  { id: 10, name: 'Chloe', secretCode: 'chloe-2026' },
-  { id: 11, name: 'Isaac', secretCode: 'isaac-2026' },
+  { id: 1, name: 'Ариунсанаа', secretCode: 'ariunsanaa-2026' },
+  { id: 2, name: 'Уугандорж', secretCode: 'uugandorj-2026' },
+  { id: 3, name: 'Мөнх-Учрал', secretCode: 'monkh-uchral-2026' },
+  { id: 4, name: 'Оргил', secretCode: 'orgil-2026' },
+  { id: 5, name: 'Энхболд', secretCode: 'enkhbold-2026' },
+  { id: 6, name: 'Энх-Амарбаясгалан', secretCode: 'enkh-amarbaysgalan-2026' },
+  { id: 7, name: 'Наранбаатар', secretCode: 'naranbaatar-2026' },
+  { id: 8, name: 'Нямбаяр', secretCode: 'nymbayr-2026' },
+  { id: 9, name: 'Даваадорж', secretCode: 'davaadorj-2026' },
+  { id: 10, name: 'Тулга', secretCode: 'tulga-2026' },
+  { id: 11, name: 'Азжаргал', secretCode: 'azjargal-2026' },
 ];
 
 const commits = [];

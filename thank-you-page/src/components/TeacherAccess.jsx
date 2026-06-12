@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Lock, Download, ArrowLeft } from 'lucide-react';
+import { Lock, Download, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 const API = '/api';
 
@@ -10,6 +10,7 @@ export default function TeacherAccess() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState(null);
+  const [showSecret, setShowSecret] = useState(false);
 
   useEffect(() => {
     if (teacher) {
@@ -32,7 +33,16 @@ export default function TeacherAccess() {
         setLetters(data.letters);
       } else {
         const d = await res.json();
-        setError(d.error || 'Нууц код буруу байна');
+        // Translate common backend messages to Mongolian
+        if (d && d.error) {
+          if (d.error === 'Invalid secret code' || d.error === 'Teacher not found') {
+            setError('Багш олдсонгүй — нууц кодоо шалгана уу');
+          } else {
+            setError(d.error);
+          }
+        } else {
+          setError('Нууц код буруу байна');
+        }
       }
     } catch {
       setError('Сүлжээний алдаа');
@@ -149,13 +159,23 @@ export default function TeacherAccess() {
           Нууц кодоо оруулаад оюутнуудын захидлыг үзнэ үү.
         </p>
         <form onSubmit={handleSubmit} className="space-y-4 max-w-sm">
-          <input
-            type="password"
-            value={secretCode}
-            onChange={e => setSecretCode(e.target.value)}
-            placeholder="Нууц кодоо оруулна уу..."
-            className="w-full bg-[#0d1117] border border-github-border rounded-md px-3 py-2 text-sm text-github-text placeholder-github-muted/50 focus:outline-none focus:border-github-accent"
-          />
+          <div className="flex items-center gap-2">
+            <input
+              type={showSecret ? 'text' : 'password'}
+              value={secretCode}
+              onChange={e => setSecretCode(e.target.value)}
+              placeholder="Нууц кодоо оруулна уу..."
+              className="flex-1 bg-[#0d1117] border border-github-border rounded-md px-3 py-2 text-sm text-github-text placeholder-github-muted/50 focus:outline-none focus:border-github-accent"
+            />
+            <button
+              type="button"
+              aria-label={showSecret ? 'Hide secret' : 'Show secret'}
+              onClick={(ev) => { ev.preventDefault(); setShowSecret(s => !s); }}
+              className="p-2 text-github-muted hover:text-github-text transition-colors"
+            >
+              {showSecret ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
           {error && (
             <p className="text-red-400 text-xs">{error}</p>
           )}

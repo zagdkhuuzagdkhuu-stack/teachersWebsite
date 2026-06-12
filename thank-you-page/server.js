@@ -34,7 +34,7 @@ app.get('/api/commits', (_req, res) => {
 app.post('/api/commits', (req, res) => {
   const { message, name } = req.body;
   if (!message || typeof message !== 'string' || !message.trim()) {
-    return res.status(400).json({ error: 'Message is required' });
+    return res.status(400).json({ error: 'Зурвас (message) шаардлагатай' });
   }
   const commit = { id: nextId++, message: message.trim(), name: name?.trim() || null, createdAt: new Date().toISOString() };
   commits.unshift(commit);
@@ -48,14 +48,14 @@ app.get('/api/letters', (_req, res) => {
 app.post('/api/letters', (req, res) => {
   const { teacherId, message, name } = req.body;
   if (!teacherId || typeof teacherId !== 'number') {
-    return res.status(400).json({ error: 'teacherId is required and must be a number' });
+    return res.status(400).json({ error: 'teacherId шаардлагатай бөгөөд тоон утгатай байх ёстой' });
   }
   if (!message || typeof message !== 'string' || !message.trim()) {
-    return res.status(400).json({ error: 'Message is required' });
+    return res.status(400).json({ error: 'Захидал (message) шаардлагатай' });
   }
   const teacher = TEACHERS.find(t => t.id === teacherId);
   if (!teacher) {
-    return res.status(404).json({ error: 'Teacher not found' });
+    return res.status(404).json({ error: 'Багш олдсонгүй' });
   }
   const letter = { id: nextId++, teacherId, message: message.trim(), name: name?.trim() || null, createdAt: new Date().toISOString() };
   letters.push(letter);
@@ -65,7 +65,7 @@ app.post('/api/letters', (req, res) => {
 app.get('/api/teacher/:secretCode', (req, res) => {
   const teacher = TEACHERS.find(t => t.secretCode === req.params.secretCode);
   if (!teacher) {
-    return res.status(401).json({ error: 'Invalid secret code' });
+    return res.status(401).json({ error: 'Багш олдсонгүй — нууц код буруу байна' });
   }
   const teacherLetters = letters.filter(l => l.teacherId === teacher.id);
   res.json({ teacher: { id: teacher.id, name: teacher.name }, letters: teacherLetters });
@@ -74,7 +74,7 @@ app.get('/api/teacher/:secretCode', (req, res) => {
 app.get('/api/teacher/:secretCode/download', (req, res) => {
   const teacher = TEACHERS.find(t => t.secretCode === req.params.secretCode);
   if (!teacher) {
-    return res.status(401).json({ error: 'Invalid secret code' });
+    return res.status(401).json({ error: 'Багш олдсонгүй — нууц код буруу байна' });
   }
   const teacherLetters = letters.filter(l => l.teacherId === teacher.id);
   let text = `Letters for Professor ${teacher.name}\n`;
@@ -99,12 +99,12 @@ app.get('/api/teacher/:secretCode/download', (req, res) => {
 app.get('/api/contributors', (_req, res) => {
   const map = {};
   for (const c of commits) {
-    const key = c.name || 'Student didn\'t leave a name';
+    const key = c.name || 'Оюутан нэрээ үлдээгээгүй';
     if (!map[key]) map[key] = { name: key, isAnonymous: !c.name, contributions: 0 };
     map[key].contributions++;
   }
   for (const l of letters) {
-    const key = l.name || 'Student didn\'t leave a name';
+    const key = l.name || 'Оюутан нэрээ үлдээгээгүй';
     if (!map[key]) map[key] = { name: key, isAnonymous: !l.name, contributions: 0 };
     map[key].contributions++;
   }

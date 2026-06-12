@@ -64,13 +64,9 @@ app.post('/api/letters', (req, res) => {
 
 app.get('/api/teacher/:secretCode', (req, res) => {
   const query = req.params.secretCode.trim().toLowerCase();
-  const teacher = TEACHERS.find((t) => {
-    const code = t.secretCode.toLowerCase();
-    const name = t.name.toLowerCase();
-    return code === query || name === query;
-  });
+  const teacher = TEACHERS.find((t) => t.secretCode.toLowerCase() === query);
   if (!teacher) {
-    return res.status(401).json({ error: 'Багш олдсонгүй — нууц код эсвэл нэрээ шалгана уу' });
+    return res.status(401).json({ error: 'Багш олдсонгүй — нууц кодоо шалгана уу' });
   }
   const teacherLetters = letters.filter(l => l.teacherId === teacher.id);
   res.json({ teacher: { id: teacher.id, name: teacher.name }, letters: teacherLetters });

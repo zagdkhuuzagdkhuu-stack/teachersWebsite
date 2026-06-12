@@ -11,7 +11,6 @@ export default function TeacherAccess() {
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState(null);
   const [showSecret, setShowSecret] = useState(false);
-  const [teacherList, setTeacherList] = useState([]);
 
   useEffect(() => {
     if (teacher) {
@@ -20,18 +19,7 @@ export default function TeacherAccess() {
       return () => clearTimeout(t);
     }
   }, [teacher]);
-useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`${API}/teachers`);
-        if (res.ok) {
-          setTeacherList(await res.json());
-        }
-      } catch {}
-    })();
-  }, []);
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!secretCode.trim()) return;
@@ -176,7 +164,7 @@ useEffect(() => {
               type={showSecret ? 'text' : 'password'}
               value={secretCode}
               onChange={e => setSecretCode(e.target.value)}
-              placeholder="Ариунсанаа эсвэл ariunsanaa-2026"
+              placeholder="ariunsanaa-2026"
               className="flex-1 bg-[#0d1117] border border-github-border rounded-md px-3 py-2 text-sm text-github-text placeholder-github-muted/50 focus:outline-none focus:border-github-accent"
             />
             <button
@@ -189,18 +177,8 @@ useEffect(() => {
             </button>
           </div>
           <p className="text-github-muted text-xs">
-            Та багшийн нэр эсвэл secret code-оор нэвтэрч болно.
+            Зөвхөн secret code-оор нэвтэрнэ.
           </p>
-          {teacherList.length > 0 && (
-            <div className="mt-3 text-github-muted text-xs space-y-1">
-              <p className="font-semibold text-github-text text-sm">Нэвтрэх боломжтой багш нар:</p>
-              {teacherList.map((t) => (
-                <p key={t.id} className="truncate">
-                  {t.name}
-                </p>
-              ))}
-            </div>
-          )}
           {error && (
             <p className="text-red-400 text-xs">{error}</p>
           )}
